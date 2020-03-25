@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import uuid
 from abc import abstractmethod, ABC
 
-from Image import Image, decode
 
 class StaticPlot(ABC):
     def show(self, save_out=None, show_on_window=True):
