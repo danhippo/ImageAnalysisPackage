@@ -25,6 +25,7 @@ class BlurDetector:
 
         Args:
             threshold: the value of blur level [0,1] to separate the blur and sharp image
+            kernel: Gaussian blur kernel to blur image.
         """
         self._thd = threshold
         self._blur_kernel = kernel
@@ -41,36 +42,3 @@ class BlurDetector:
         low_pass = cv2.GaussianBlur(gray_img, self._blur_kernel, 0)
         ratio = tenengrad_focus_value(low_pass)/tenengrad_focus_value(gray_img)
         return ratio > self._thd
-
-
-# if __name__ == '__main__':
-#     import pathlib
-#     import shutil
-#     from Image import Image
-#     # root = pathlib.Path(r"D:\RD_Data\KS\AI_Competation\Merge_data\PPC2_merge\defect")
-#     root = pathlib.Path(
-#         r"D:\RD_Data\KS\AI_Competation\train_set\KS_AICompetition01\front_green\normal")
-#     # root = pathlib.Path(r"D:\RD_Data\KS\AI_Competation\Merge_data\PPC4_merge\defect")
-#     # root = pathlib.Path(r"D:\RD_Data\KS\AI_Competation\Merge_data\PPC4_merge\normal")
-#     # root = pathlib.Path(
-#     #     r"D:\RD_Data\KS\AI_Competation\train_set\KS_AICompetition01\back_gold\defect")
-#
-#     dst_dir = pathlib.Path(r"D:\test\Blur_detect")
-#     if dst_dir.exists():
-#         shutil.rmtree(str(dst_dir))
-#     blur_dir = dst_dir.joinpath("blur")
-#     sharp_dir = dst_dir.joinpath("sharp")
-#     blur_dir.mkdir(exist_ok=True, parents=True)
-#     sharp_dir.mkdir(exist_ok=True, parents=True)
-#     imgs = root.glob("*.bmp")
-#
-#     blur_detector = BlurDetector(0.65)
-#     for img_path in imgs:
-#         try:
-#             ori_img = Image.from_file(str(img_path))
-#             if blur_detector.detect(gray_img=ori_img.gray):
-#                 shutil.copyfile(str(img_path), blur_dir.joinpath(img_path.name))
-#             else:
-#                 shutil.copyfile(str(img_path), sharp_dir.joinpath(img_path.name))
-#         except Exception:
-#             print(img_path.name)
